@@ -1,0 +1,89 @@
+/* Basic body styling */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color:BLUE;
+  margin: 0;
+  padding: 10px;
+  color: #333;
+}
+
+h1 {
+  color: #1e88e5;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+/* Center the board and apply background styling */
+#sudoku-board {
+  display: grid;
+  grid-template-columns: repeat(9, 45px);
+  gap: 4px;
+  padding: 15px;
+  background-color: PURPLE; /* This will be the background color for the board */
+  border: 4px solid #1e88e5; /* Increase border size to 4px for visibility */
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Style each cell with rounded corners, shadow, and centered text */
+.cell {
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  background-color: GREEN; /* Background color for the cells */
+  border: none;
+  border-radius: 6px; /* Rounded corners for cells */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+/* Highlight cell when selected */
+.cell:focus {
+  background-color: #e1f5fe; /* Color when a cell is focused */
+  outline: 2px solid #1e88e5; /* Outline color for focused cells */
+}
+
+/* Make fixed cells stand out visually */
+.fixed {
+  background-color: #bbdefb; /* Background color for fixed cells */
+  color: #1e88e5; /* Color for fixed cells */
+  font-weight: bold;
+}
+
+/* Style the check button with smooth shading and rounded corners */
+#check-solution {
+  padding: 12px 24px;
+  margin-top: 20px;
+  font-size: 1em;
+  font-weight: bold;
+  color: white; /* Text color for button */
+  background-color: #1e88e5; /* Background color for button */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Rounded corners for button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.1s ease; /* Smooth transitions */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for button */
+}
+
+/* Button hover and active styles */
+#check-solution:hover {
+  background-color: #1565c0; /* Darker color on hover */
+}
+
+#check-solution:active {
+  transform: scale(0.98); /* Slight scale down on click */
+}
+
+.cell.completed {
+  background-color: lightgreen; /* Color for completed cells */
+}
+
+.cell.error {
+  background-color: lightcoral; /* Color for incorrect inputs */
+}
