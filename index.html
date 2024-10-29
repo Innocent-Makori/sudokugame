@@ -10,6 +10,380 @@
     <h1>Sudoku Game</h1>
     <div id="sudoku-board"></div>
     <button id="check-solution">Check Solution</button>
-    <script src="script.js"></script>
+    <script>
+        // Sudoku puzzles for levels 1 to 16
+const puzzles = [
+  // Level 1 - Easy
+  [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+  ],
+  // Level 2 - Easy
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 6, 0, 4, 0, 0],
+    [0, 4, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 7, 0, 0, 0],
+    [0, 0, 2, 0, 1, 0, 6, 0, 0],
+    [0, 0, 0, 9, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 5, 0, 0],
+    [0, 0, 0, 0, 2, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 3, 0, 0, 0]
+  ],
+  // Level 3 - Medium
+  [
+    [0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [3, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 9],
+    [0, 0, 0, 0, 8, 0, 2, 0, 0],
+    [0, 0, 0, 4, 0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0, 0, 3, 0, 0],
+    [0, 0, 0, 3, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 8, 0],
+    [0, 0, 4, 0, 0, 0, 0, 0, 0]
+  ],
+  // Level 4 - Medium
+  [
+    [0, 0, 0, 0, 0, 3, 0, 0, 0],
+    [0, 6, 0, 0, 0, 0, 0, 0, 4],
+    [2, 0, 0, 5, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 5, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 5, 0],
+    [0, 0, 3, 0, 0, 0, 0, 0, 0],
+    [0, 4, 0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 2, 0, 0, 0, 0, 0]
+  ],
+  // Level 5 - Medium
+  [
+    [0, 0, 0, 5, 0, 0, 0, 0, 0],
+    [0, 0, 2, 0, 0, 6, 0, 1, 0],
+    [0, 8, 1, 0, 0, 0, 4, 0, 0],
+    [0, 0, 0, 3, 0, 0, 0, 0, 0],
+    [0, 0, 4, 0, 0, 0, 0, 8, 0],
+    [0, 0, 0, 0, 7, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 2, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 3, 0, 0, 0, 0, 0, 4]
+  ],
+  // Level 6 - Hard
+  [
+    [0, 0, 8, 0, 4, 0, 0, 0, 1],
+    [0, 0, 0, 3, 0, 1, 0, 0, 4],
+    [1, 4, 0, 2, 0, 0, 6, 3, 0],
+    [0, 0, 2, 0, 0, 0, 0, 0, 0],
+    [3, 0, 0, 4, 0, 6, 0, 0, 2],
+    [0, 0, 0, 0, 2, 0, 5, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [4, 0, 0, 0, 0, 0, 0, 5, 3],
+    [0, 0, 0, 0, 5, 0, 0, 0, 0]
+  ],
+  // Level 7 - Hard
+  [
+    [0, 0, 6, 0, 0, 0, 0, 5, 0],
+    [0, 0, 0, 0, 0, 2, 1, 0, 0],
+    [0, 0, 2, 0, 0, 5, 0, 3, 0],
+    [0, 5, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 4, 0, 2, 0, 0, 8, 1],
+    [0, 0, 0, 0, 0, 0, 7, 0, 0],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 5, 0, 6, 0, 0, 4],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ],
+  // Level 8 - Hard
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 4, 0, 0, 1, 0, 0],
+    [0, 0, 2, 0, 0, 0, 0, 0, 0],
+    [0, 6, 0, 0, 0, 2, 0, 0, 0],
+    [0, 5, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 2, 0],
+    [0, 0, 0, 0, 0, 0, 3, 0, 0],
+    [0, 3, 0, 0, 0, 0, 0, 0, 0]
+  ],
+  // Level 9 - Very Hard
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 5, 0, 0, 3, 0, 0, 0],
+    [0, 0, 0, 0, 4, 0, 0, 6, 0],
+    [0, 3, 0, 0, 0, 0, 0, 0, 2],
+    [0, 0, 0, 6, 0, 0, 0, 1, 0],
+    [0, 0, 4, 0, 0, 5, 3, 0, 0],
+    [0, 4, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 6, 1, 5, 0],
+    [0, 0, 0, 5, 0, 0, 0, 0, 0]
+  ],
+  // Level 10 - Very Hard
+  [
+    [0, 0, 8, 0, 0, 0, 4, 0, 0],
+    [0, 0, 0, 5, 0, 0, 0, 8, 0],
+    [0, 3, 0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0, 2, 0, 0, 3],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 4, 0, 0, 0, 0],
+    [0, 0, 0, 4, 0, 0, 0, 0, 2],
+    [1, 0, 0, 0, 0, 0, 3, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 5, 0]
+  ],
+  // Level 11 - Extreme
+  [
+    [0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 4, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 2, 0, 0, 0, 0, 0],
+    [0, 0, 3, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 5, 0],
+    [0, 0, 0, 0, 3, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ],
+  // Level 12 - Extreme
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 4, 0, 1, 0, 0, 0],
+    [0, 0, 5, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 3, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 2, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ],
+  // Level 13 - Extreme
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 2, 0, 0, 0, 0, 0],
+    [0, 0, 3, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 4, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ],
+  // Level 14 - Extreme
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ],
+  // Level 15 - Extreme
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ],
+  // Level 16 - Extreme
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ],
+  // Level 17 - Extreme
+  [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ]
+];
+
+// Initialize current level
+let currentLevel = 0;
+
+// Add an event listener to run the code after the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // Create a reference to the Sudoku board and check button after DOM is loaded
+  const board = document.getElementById('sudoku-board');
+  const checkButton = document.getElementById('check-solution');
+
+  // Function to create the Sudoku board UI for the current level
+  function createBoard() {
+    board.innerHTML = ''; // Clear the board
+    const puzzle = puzzles[currentLevel]; // Get the current level puzzle
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+        const cell = document.createElement('input');
+        cell.type = 'text';
+        cell.maxLength = 1;
+        cell.classList.add('cell');
+
+        if (puzzle[row][col] !== 0) {
+          cell.value = puzzle[row][col];
+          cell.disabled = true; // Disable pre-filled cells
+          cell.classList.add('fixed');
+        } else {
+          cell.addEventListener('input', () => handleInput(cell)); // Allow input in empty cells
+        }
+
+        cell.dataset.row = row;
+        cell.dataset.col = col;
+        board.appendChild(cell);
+      }
+    }
+  }
+
+  // Function to handle input in cells (with duplicate check)
+  function handleInput(cell) {
+    const value = cell.value;
+
+    // Ensure only numbers 1-9 are allowed
+    if (!/^[1-9]?$/.test(value)) {
+      cell.value = ''; // Clear invalid input
+      return;
+    }
+
+    const row = cell.dataset.row;
+    const col = cell.dataset.col;
+
+    // Check for duplicates in the same row
+    const rowCells = [...document.querySelectorAll(`.cell[data-row="${row}"]`)];
+    const colCells = [...document.querySelectorAll(`.cell[data-col="${col}"]`)];
+
+    // Check row for duplicates
+    if (rowCells.some(otherCell => otherCell !== cell && otherCell.value === value)) {
+      alert(`Number ${value} already exists in row ${parseInt(row) + 1}.`);
+      cell.value = ''; // Clear the input if duplicate found
+    }
+
+    // Check column for duplicates
+    if (colCells.some(otherCell => otherCell !== cell && otherCell.value === value)) {
+      alert(`Number ${value} already exists in column ${parseInt(col) + 1}.`);
+      cell.value = ''; // Clear the input if duplicate found
+    }
+  }
+
+  // Function to check solution and move to the next level if correct
+  function checkSolution() {
+    const isCorrect = validateBoard();
+
+    if (isCorrect) {
+      alert(`Congratulations! You've completed level You are a genious like Innocent Theone ${currentLevel + 1}!`);
+      highlightCompletedRowsAndColumns(); // Highlight filled rows and columns
+      currentLevel++;
+
+      if (currentLevel < puzzles.length) {
+        const proceed = confirm(`Do you want to move to level ${currentLevel + 1}?`);
+        if (proceed) {
+          createBoard(); // Load next level
+        }
+      } else {
+        alert("You've completed all levels! Great job!");
+      }
+    } else {
+      alert("Oops! There are errors in your solution. Please check again.");
+      highlightErrors();
+    }
+  }
+
+  // Validate the entire Sudoku board
+  function validateBoard() {
+    // Check all rows and columns
+    for (let i = 0; i < 9; i++) {
+      const rowCells = [...document.querySelectorAll(`.cell[data-row="${i}"]`)];
+      const colCells = [...document.querySelectorAll(`.cell[data-col="${i}"]`)];
+
+      if (!isComplete(rowCells) || !isComplete(colCells)) {
+        return false;
+      }
+    }
+
+    // Check all 3x3 grids
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 3; col++) {
+        const gridCells = [];
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            const cell = document.querySelector(`.cell[data-row="${row * 3 + i}"][data-col="${col * 3 + j}"]`);
+            gridCells.push(cell);
+          }
+        }
+        if (!isComplete(gridCells)) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  // Function to check if a set of cells is complete and valid
+  function isComplete(cells) {
+    const values = cells.map(cell => cell.value).filter(v => v);
+    return values.length === 9 && new Set(values).size === 9; // Should contain numbers 1-9 without duplicates
+  }
+
+  // Highlight incorrect cells
+  function highlightErrors() {
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+      if (cell.value && !/^[1-9]$/.test(cell.value)) {
+        cell.classList.add('error'); // Add an error class for styling
+      } else {
+        cell.classList.remove('error'); // Remove error class if the input is valid
+      }
+    });
+  }
+
+  // Highlight completed rows and columns
+  function highlightCompletedRowsAndColumns() {
+    for (let i = 0; i < 9; i++) {
+      const rowCells = [...document.querySelectorAll(`.cell[data-row="${i}"]`)];
+      const colCells = [...document.querySelectorAll(`.cell[data-col="${i}"]`)];
+
+      if (isComplete(rowCells)) {
+        rowCells.forEach(cell => {
+          cell.classList.add('completed'); // Add completed class to filled row
+        });
+      }
+
+      if (isComplete(colCells)) {
+        colCells.forEach(cell => {
+          cell.classList.add('completed'); // Add completed class to filled column
+        });
+      }
+    }
+  }
+
+  // Event listener for the check solution button
+  checkButton.addEventListener('click', checkSolution);
+
+  // Call createBoard to initialize the first level
+  createBoard();
+});
+
+        
+    </script>
 </body>
 </html>
